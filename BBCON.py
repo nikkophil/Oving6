@@ -33,12 +33,13 @@ class BBCON:
         for behavior in self.__active_behaviors:
             behavior.update()
         #Get info from arbitrator stop/update motObs
-        rec, stop = self.__arbitrator.choose_action()
-        if stop:
+        rec = self.__arbitrator.choose_action()
+        if rec[3]:
             #Usikker på om dette er alt som skal gjøres, må sikkert fikses senere
             for behavior in self.__active_behaviors:
                 self.deactivate_behavior(behavior)
         for motOb in self.__motobs:
+            rec = (rec[1],rec[2])
             motOb.update(rec)
         #Sleep, i sekunder
         sleep(0.5)
