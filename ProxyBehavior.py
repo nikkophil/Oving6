@@ -79,8 +79,9 @@ class ProxyBehavior:
             self.__match_degree = 0
             rec = ('F', 0.5, False)
         self.__weight = self.__priority*self.__match_degree
-        #TODO: Send rec til Arbitrator og weight til arbitrator
+
+        recDir, recDeg, recStop = rec
+        outRec = (self.__weight, recDir, recDeg, recStop)
+        self.__bbcon.__arbitrator.sendRecommendation(outRec)
 
     #Hjelpefunksjoner
-    def getWeight(self):
-        return self.__weight
