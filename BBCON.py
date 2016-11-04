@@ -1,5 +1,5 @@
 from time import sleep
-from zumo_button import wait_for_press
+from basic_robot.zumo_button import ZumoButton
 
 class BBCON:
     def __init__(self,behaviors,sensObs,motObs,arbitrator):
@@ -47,7 +47,8 @@ class BBCON:
 
 
 def main():
-    wait_for_press()
+    startButton = ZumoButton()
+    startButton.wait_for_press()
 
 
 
