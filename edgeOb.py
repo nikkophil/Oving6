@@ -2,8 +2,6 @@ from basic_robot.reflectance_sensors import ReflectanceSensor
 
 class EdgeOb():
 
-
-    # test av oppdatering
     def __init__(self):
         # List of all associated sensors
         self.sensor = ReflectanceSensor()
