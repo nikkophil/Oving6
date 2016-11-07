@@ -1,4 +1,3 @@
-from basic_robot.irproximity_sensor import IRProximitySensor
 
 class IRProxySensOB:
     def __init__(self,sensorWrapper):

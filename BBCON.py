@@ -1,15 +1,30 @@
 from time import sleep
 from basic_robot.zumo_button import ZumoButton
+from basic_robot.irproximity_sensor import IRProximitySensor
+from basic_robot.ultrasonic import Ultrasonic
+from IRProxySensOb import IRProxySensOB
+from UltraSonicSensOb import UltraSonicSensOb
+from edgeOb import EdgeOb
+from motOb import MotOb
+from Arbitrator import Arbitrator
+from ProxyBehavior import ProxyBehavior
+from camBehavior import CamBehavior
+from WanderBehavior import WanderBehavior
+from edgeBehavior import EdgeBehavior
+from camOb import CamOb
 
 class BBCON:
-    def __init__(self,behaviors,sensObs,motObs,arbitrator):
+    def __init__(self,sensObs,motObs):
         #Ha alle behaviors i active til all tid, legg behavior til inactive hvis den skal være inactiv
-        self.__active_behaviors = behaviors
+        self.__active_behaviors = []
         self.__inactive_behaviors = []
         self.__sensobs = sensObs
         self.__motobs = motObs
-        self.__arbitrator = arbitrator
+        self.__arbitrator = None
         self.__timeStepCount = 0
+
+    def set_arbitrator(self,arbitrator):
+        self.__arbitrator = arbitrator
 
     def add_behavior(self, behavior):
         self.__active_behaviors.append(behavior)
@@ -48,8 +63,53 @@ class BBCON:
 
 
 def main():
+
+    proxyPriority = 1
+    linePriority = 0.8
+    camPriority = 0.5
+    wanderPriority = 0.2
+
+    #Vent til knapp trykkes
     startButton = ZumoButton()
     startButton.wait_for_press()
+
+    #Initialiserer objekter:
+
+    #Sensor objekter:
+    IrProxyOb = IRProxySensOB(IRProximitySensor())
+    UltrasonicOb = UltraSonicSensOb(Ultrasonic)
+    CameraOb = CamOb()
+    EdgyOb = EdgeOb()
+    sensObList = [IrProxyOb,UltrasonicOb,CameraOb,EdgyOb]
+
+    #Motor objekter
+    mainMotorOb = MotOb()
+    motObList = [mainMotorOb]
+    #BBCON
+    brain = BBCON(sensObList,motObList)
+
+    #Arbitrator objekt:
+    MasterArbitrator = Arbitrator(brain)
+    #Legg til brain
+    brain.set_arbitrator(MasterArbitrator)
+
+    #Behavior objekter:
+    ProximityBehavior = ProxyBehavior(brain, [IrProxyOb,UltrasonicOb], proxyPriority)
+    CameraBehavior = CamBehavior(brain,[CameraOb],camPriority)
+    WanderingBehavior = WanderBehavior(brain,[],wanderPriority)
+    EdgyBehavior = EdgeBehavior(brain,[EdgyOb],linePriority)
+    #Legg til brain
+    brain.add_behavior(ProximityBehavior)
+    brain.add_behavior(CameraBehavior)
+    brain.add_behavior(WanderingBehavior)
+    brain.add_behavior(EdgyBehavior)
+
+    behaviorList = [ProximityBehavior,CameraBehavior,WanderingBehavior,EdgyBehavior]
+
+    while True:
+        brain.run_one_timestep()
+
+
 
 
 
