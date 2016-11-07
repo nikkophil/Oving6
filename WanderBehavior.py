@@ -43,10 +43,10 @@ class WanderBehavior():
 
         if randDirection == 0:
             self.__match_degree = 1
-            self.__motorRecs= ["L", randAngle, False]
+            self.__motorRecs= (self.__weight, "L", randAngle, False)
         elif randDirection == 1:
             self.__match_degree = 1
-            self.__motorRecs = ["R", randAngle, False]
+            self.__motorRecs = (self.__weight, "R", randAngle, False)
 
     #Hjelpefunksjoner
 

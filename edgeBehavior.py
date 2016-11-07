@@ -42,6 +42,7 @@ class EdgeBehavior:
         right_val = 0
         left_val = 0
         if self.edge():
+            self.__weight = 1
             for i in self.reflectances[0:3]:
                 right_val += i
             for i in self.reflectances[3:6]:
@@ -49,16 +50,17 @@ class EdgeBehavior:
             #Sjekker om den treffer en linje fra høyre eller venstre side
             if right_val < left_val:
                 self.__match_degree = 1
-                self.__motorRecs = ['L', 90, True]
+                self.__motorRecs = (self.__weight, 'L', 90, True)
             elif left_val < right_val:
                 self.__match_degree = 1
-                self.__motorRecs = ['R', 90, True]
+                self.__motorRecs = (self.__weight, 'R', 90, True)
             else:
                 self.__match_degree = 1
-                self.__motorRecs = ['B', self.__speed, True]
+                self.__motorRecs = (self.__weight,'B', self.__speed, True)
         else:
+            self.__weight = 0
             self.__match_degree = 0
-            self.__motorRecs = ['F', self.__speed, False]
+            self.__motorRecs = ('F', self.__speed, False)
 
     #Hjelpefunksjon
     #Sjekker om signalet er sterk nok
