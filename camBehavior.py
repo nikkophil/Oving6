@@ -78,7 +78,7 @@ class CamBehavior:
         #  (and halt requests).
         #Husk å oppdatere match_degree
         #få Imager fra camOb
-        img = self.__sensors[0].get_value
+        img = self.__sensors[0].get_value()
         error = 0.15
         img_xmax = img.xmax
         img_ymax = img.ymax

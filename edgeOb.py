@@ -1,14 +1,14 @@
-from basic_robot.reflectance_sensors import ReflectanceSensor
+from basic_robot.reflectance_sensors import ReflectanceSensors
 
 class EdgeOb():
 
     def __init__(self):
         # List of all associated sensors
-        self.sensor = ReflectanceSensor()
+        self.sensor = ReflectanceSensors()
 
 
     def update(self):
-        self.sensor.Update()
+        self.sensor.update()
 
 
     def get_value(self):
