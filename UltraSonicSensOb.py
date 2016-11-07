@@ -1,4 +1,3 @@
-from basic_robot.ultrasonic import Ultrasonic
 
 class UltraSonicSensOb:
     def __init__(self,sensorWrapper):
