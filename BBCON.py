@@ -47,6 +47,7 @@ class BBCON:
         #Update behaviors:
         for behavior in self.__active_behaviors:
             behavior.update()
+            self.__arbitrator.sendRecommendation(behavior.__motorRecs[0])
         #Get info from arbitrator stop/update motObs
         rec = self.__arbitrator.choose_action()
         if rec[3]:
@@ -77,7 +78,7 @@ def main():
 
     #Sensor objekter:
     IrProxyOb = IRProxySensOB(IRProximitySensor())
-    UltrasonicOb = UltraSonicSensOb(Ultrasonic)
+    UltrasonicOb = UltraSonicSensOb(Ultrasonic())
     CameraOb = CamOb()
     EdgyOb = EdgeOb()
     sensObList = [IrProxyOb,UltrasonicOb,CameraOb,EdgyOb]

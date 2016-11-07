@@ -17,11 +17,13 @@ class Arbitrator:
         probRange = weightRange[-1]*random()
 
         recNum = 0
-        for i in range(len(weightRange)-1):
+        for i in range(len(weightRange)):
             if probRange < weightRange[i]:
                 recNum = i-1
                 break
-
+        print(weightRange)
+        print(self.__recList)
+        print(recNum)
         outRec = self.__recList[recNum]
         self.__recList=[]
         return outRec

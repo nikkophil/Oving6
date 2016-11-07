@@ -82,6 +82,6 @@ class ProxyBehavior:
 
         recDir, recDeg, recStop = rec
         outRec = (self.__weight, recDir, recDeg, recStop)
-        self.__bbcon.__arbitrator.sendRecommendation(outRec)
+        self.__motorRecs.append(outRec)
 
     #Hjelpefunksjoner
