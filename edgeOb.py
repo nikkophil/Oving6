@@ -8,7 +8,7 @@ class EdgeOb():
 
 
     def update(self):
-        self.sensor.update()
+        return self.sensor.update()
 
 
     def get_value(self):
