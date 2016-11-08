@@ -6,7 +6,7 @@ class WanderBehavior():
         self.__bbcon = bbcon        #Pointer til kontrolleren, bruk til indirekte kommunikasjon
         self.__sensors = sensorList #Liste av sensor objektene som leverer info
         self.__motorRecs = []       #Anbefalinger som sendes til motorene, kan kanskje fernes og erstattes med en funskjon
-        self.__active = False       #Bestemmer om behavior er aktiv
+        self.__active = True        #Bestemmer om behavior er aktiv
         self.__priority = priority  #Prioriteten til behavioren, tall mellom 0 og 1.
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
@@ -47,7 +47,12 @@ class WanderBehavior():
         elif randDirection == 1:
             self.__match_degree = 1
             recs = (self.__weight, "R", randAngle, False)
+        self.__motorRecs = []
         self.__motorRecs.append(recs)
 
     #Hjelpefunksjoner
+
+    def getRecs(self):
+        return self.__motorRecs
+
 

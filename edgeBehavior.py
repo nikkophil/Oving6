@@ -5,7 +5,7 @@ class EdgeBehavior:
         self.__bbcon = bbcon        #Pointer til kontrolleren, bruk til indirekte kommunikasjon
         self.__sensors = sensorList #Liste av sensor objektene som leverer info
         self.__motorRecs = []       #Anbefalinger som sendes til motorene, kan kanskje fernes og erstattes med en funskjon
-        self.__active = False       #Bestemmer om behavior er aktiv
+        self.__active = True        #Bestemmer om behavior er aktiv
         self.__priority = priority  #Prioriteten til behavioren, tall mellom 0 og 1.
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
@@ -60,7 +60,7 @@ class EdgeBehavior:
             self.__weight = 0
             self.__match_degree = 0
             self.__motorRecs = ('F', self.__speed, False)
-
+        self.__motorRecs = []
         self.__motorRecs.append(recs)
 
     #Hjelpefunksjon
@@ -70,6 +70,9 @@ class EdgeBehavior:
             if i < self.reflectanceValue:
                 return True
         return False
+
+    def getRecs(self):
+        return self.__motorRecs
 
 
 
