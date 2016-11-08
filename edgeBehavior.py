@@ -44,7 +44,7 @@ class EdgeBehavior:
         right_val = 0
         left_val = 0
         if self.edge():
-            self.__weight = 1
+            self.__weight = self.__priority * self.__match_degree
             self.__match_degree = 1
             for i in self.reflectances[0:3]:
                 right_val += i
@@ -58,9 +58,9 @@ class EdgeBehavior:
             else:
                 recs = (self.__weight,'B', self.__speed, True)
         else:
-            self.__weight = 0
+            self.__weight = self.__priority * self.__match_degree
             self.__match_degree = 0
-            recs = ('F', self.__speed, False)
+            recs = (self.__weight, 'F', self.__speed, False)
 
         self.__motorRecs.append(recs)
 
