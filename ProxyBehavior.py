@@ -6,7 +6,7 @@ class ProxyBehavior:
         self.__bbcon = bbcon        #Pointer til kontrolleren, bruk til indirekte kommunikasjon
         self.__sensors = sensorList #Liste av sensor objektene som leverer info
         self.__motorRecs = []       #Anbefalinger som sendes til motorene, kan kanskje fernes og erstattes med en funskjon
-        self.__active = False       #Bestemmer om behavior er aktiv
+        self.__active = True      #Bestemmer om behavior er aktiv
         self.__priority = priority  #Prioriteten til behavioren, tall mellom 0 og 1.
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
@@ -32,7 +32,6 @@ class ProxyBehavior:
         #Hvis fortsatt aktiv, gjør dette:
         if (self.__active):
             self.sense_and_act()
-            self.__weight = self.__priority * self.__match_degree           #Oppdaterer weight, basert på data
 
     def sense_and_act(self):
         #The core computations performed by the behavior that use sensob readings to produce motor recommendations
@@ -82,6 +81,12 @@ class ProxyBehavior:
 
         recDir, recDeg, recStop = rec
         outRec = (self.__weight, recDir, recDeg, recStop)
+        self.__motorRecs = []
         self.__motorRecs.append(outRec)
+        print("ProxyMotorRec:")
+        print(self.__motorRecs[0])
 
     #Hjelpefunksjoner
+
+    def getRecs(self):
+        return self.__motorRecs

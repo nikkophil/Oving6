@@ -27,6 +27,7 @@ class BBCON:
         self.__arbitrator = arbitrator
 
     def add_behavior(self, behavior):
+        behavior.__active = True
         self.__active_behaviors.append(behavior)
 
     def add_sensob(self,sensOb):
@@ -47,7 +48,7 @@ class BBCON:
         #Update behaviors:
         for behavior in self.__active_behaviors:
             behavior.update()
-            self.__arbitrator.sendRecommendation(behavior.__motorRecs[0])
+            self.__arbitrator.sendRecommendation(behavior.getRecs()[0])
         #Get info from arbitrator stop/update motObs
         rec = self.__arbitrator.choose_action()
         if rec[3]:
@@ -105,7 +106,7 @@ def main():
     brain.add_behavior(WanderingBehavior)
     brain.add_behavior(EdgyBehavior)
 
-    behaviorList = [ProximityBehavior,CameraBehavior,WanderingBehavior,EdgyBehavior]
+    behaviorList = [ProximityBehavior, CameraBehavior, WanderingBehavior, EdgyBehavior]
 
     while True:
         brain.run_one_timestep()
