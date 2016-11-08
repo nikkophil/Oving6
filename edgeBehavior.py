@@ -37,8 +37,8 @@ class EdgeBehavior:
             self.__weight = self.__priority * self.__match_degree           #Oppdaterer weight, basert på data
 
     def sense_and_act(self):
-        self.sensor.update()
         self.reflectances = self.sensor.update()
+        print(self.reflectances)
         #Verdien av de tre sensorene til henoldsvis høyre og venstre
         right_val = 0
         left_val = 0
@@ -60,7 +60,7 @@ class EdgeBehavior:
             self.__weight = 0
             self.__match_degree = 0
             self.__motorRecs = ('F', self.__speed, False)
-        self.__motorRecs = []
+
         self.__motorRecs.append(recs)
 
     #Hjelpefunksjon
@@ -73,7 +73,6 @@ class EdgeBehavior:
 
     def getRecs(self):
         return self.__motorRecs
-
 
 
 
