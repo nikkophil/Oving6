@@ -6,7 +6,6 @@ class UltraSonicSensOb:
         self.distance = None
 
     def update(self):
-        self.sensor.update()
         self.distance = self.sensor.get_value()
         return self.distance
 

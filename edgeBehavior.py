@@ -10,7 +10,7 @@ class EdgeBehavior:
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
         self.__weight = 0           #Hvor 'viktig' anbefalingen er, =prioritet*match_degree
-        self.__speed = 0.5
+        self.__speed = 0.1
         self.sensor = sensorList[0]
         self.reflectanceValue = 0.2
 
@@ -39,27 +39,26 @@ class EdgeBehavior:
     def sense_and_act(self):
         self.__motorRecs = []
         self.reflectances = self.sensor.get_value()
-        print(self.reflectances)
         #Verdien av de tre sensorene til henoldsvis høyre og venstre
-        right_val = 0
         left_val = 0
+        right_val = 0
         if self.edge():
-            self.__weight = self.__priority * self.__match_degree
             self.__match_degree = 1
+            self.__weight = self.__priority * self.__match_degree
             for i in self.reflectances[0:3]:
                 right_val += i
             for i in self.reflectances[3:6]:
                 left_val += i
             #Sjekker om den treffer en linje fra høyre eller venstre side
             if right_val < left_val:
-                recs = (self.__weight, 'L', 90, True)
+                recs = (self.__weight, 'L', 90, False)
             elif left_val < right_val:
-                recs = (self.__weight, 'R', 90, True)
+                recs = (self.__weight, 'R', 90, False)
             else:
-                recs = (self.__weight,'B', self.__speed, True)
+                recs = (self.__weight,'B', self.__speed, False)
         else:
+            self.__match_degree = 0.1
             self.__weight = self.__priority * self.__match_degree
-            self.__match_degree = 0
             recs = (self.__weight, 'F', self.__speed, False)
 
         self.__motorRecs.append(recs)

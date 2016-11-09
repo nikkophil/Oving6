@@ -19,19 +19,20 @@ class GetGoalColor:
 
         outStr = "True"
         for i in GoalColor:
-            outStr += ", " + str(i)
+            outStr += ", " + GoalColor[i]
 
         file = open("goalColor", mode='w')
         file.write(outStr)
         file.close()
+
 
 class CamBehavior:
     #Husk, en behavior skal ikke kommunisere med en annen behavior!
     def __init__(self,bbcon,sensorList, priority):
         self.__bbcon = bbcon        #Pointer til kontrolleren, bruk til indirekte kommunikasjon
         self.__sensors = sensorList #Liste av sensor objektene som leverer info
-        self.__motorRecs = [None]   #Anbefalinger som sendes til motorene, kan kanskje fernes og erstattes med en funskjon
-        self.__active = True        #Bestemmer om behavior er aktiv
+        self.__motorRecs = []       #Anbefalinger som sendes til motorene, kan kanskje fernes og erstattes med en funskjon
+        self.__active = False       #Bestemmer om behavior er aktiv
         self.__priority = priority  #Prioriteten til behavioren, tall mellom 0 og 1.
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
@@ -102,22 +103,8 @@ class CamBehavior:
                 bestArea = [goalPixels, i]
         bestpart = bestArea[1]
         if bestpart != -1:
-            self.__halt_request = False
-            self.__weight = self.__priority*0.6
+            self.__motorRecs = [("L",10), ("F",0.5), ("R",10)][bestpart]
             self.__match_degree = 0.6
-            self.__motorRecs[0] = [(self.__weight, "L", 10, self.__halt_request),
-                                (self.__weight, "F", 0.5, self.__halt_request),
-                                (self.__weight, "R", 10, self.__halt_request)][bestpart]
-
         else:
-            self.__halt_request = False
-            self.__weight = self.__priority * 0.1
+            self.__motorRecs = [("L",45),("R",45)][randint(0,1)]
             self.__match_degree = 0.1
-            self.__motorRecs[0] = [(self.__weight, "L", 45, self.__halt_request),
-                                (self.__weight, "R", 10, self.__halt_request)][randint(0,1)]
-
-    def getRecs(self):
-        return self.__motorRecs
-
-if __name__ == "__main__":
-    GetGoalColor()

@@ -12,6 +12,7 @@ from camBehavior import CamBehavior
 from WanderBehavior import WanderBehavior
 from edgeBehavior import EdgeBehavior
 from camOb import CamOb
+from AngleTestBehavior import AngleTestBehavior
 
 class BBCON:
     def __init__(self,sensObs,motObs):
@@ -100,12 +101,13 @@ def main():
     CameraBehavior = CamBehavior(brain,[CameraOb],camPriority)
     WanderingBehavior = WanderBehavior(brain,[],wanderPriority)
     EdgyBehavior = EdgeBehavior(brain,[EdgyOb],linePriority)
+    AngleTester = AngleTestBehavior(brain, [], 1)
     #Legg til brain
-    brain.add_behavior(ProximityBehavior)
-    brain.add_behavior(CameraBehavior)
+    #brain.add_behavior(ProximityBehavior)
+    #brain.add_behavior(CameraBehavior)
     brain.add_behavior(WanderingBehavior)
-    brain.add_behavior(EdgyBehavior)
-
+    #brain.add_behavior(EdgyBehavior)
+    #brain.add_behavior(AngleTester)
     behaviorList = [ProximityBehavior, CameraBehavior, WanderingBehavior, EdgyBehavior]
 
     while True:
