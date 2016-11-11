@@ -11,7 +11,7 @@ class ProxyBehavior:
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
         self.__weight = 0           #Hvor 'viktig' anbefalingen er, =prioritet*match_degree
-        self.__speed=0.5
+        self.__speed=0.2
 
     #Obligatoriske funksjoner
     def consider_deactivation(self):
@@ -55,34 +55,33 @@ class ProxyBehavior:
             rec = ('F', self.__speed, False)
         elif frontTrig and leftTrig:
             self.__match_degree = 1
-            rec  = ('R', 45, False)
+            rec  = ('L', 80, False)
         elif frontTrig and rightTrig:
             self.__match_degree = 1
-            rec = ('L', 45, False)
+            rec = ('R', 80, False)
         elif rightTrig:
-            self.__match_degree = 0.1
-            rec = ('L', 10, False)
+            self.__match_degree = 0.7
+            rec = ('R', 30, False)
         elif leftTrig:
-            self.__match_degree = 0.1
-            rec = ('R', 10, False)
+            self.__match_degree = 0.7
+            rec = ('L', 30, False)
         elif frontTrig:
             self.__match_degree = 1
-            dir = randint(1, 3)
+            dir = randint(1, 2)
             if (dir == 1):
-                rec = ('B', self.__speed, False)
-            elif (dir == 2):
-                rec = ('L', 45, False)
+                rec = ('R', 80, False)
             else:
-                rec = ('R', 45, False)
+                #(dir == 2)
+                rec = ('L', 80, False)
+
         else:
-            self.__match_degree = 0
-            rec = ('F', 0.5, False)
+            self.__match_degree = 0.05
+            rec = ('F', self.__speed, False)
         self.__weight = self.__priority*self.__match_degree
 
         recDir, recDeg, recStop = rec
         outRec = (self.__weight, recDir, recDeg, recStop)
-        self.__motorRecs = []
-        self.__motorRecs.append(outRec)
+        self.__motorRecs = [outRec]
         print("ProxyMotorRec:")
         print(self.__motorRecs[0])
 

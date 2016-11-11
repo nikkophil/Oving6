@@ -6,11 +6,14 @@ class Arbitrator:
         self.__recList = []
 
     def sendRecommendation(self, recTuple):
+        print("Sendt rec to arb:", recTuple)
         self.__recList.append(recTuple)
 
     def choose_action(self):
         weightRange = [0]
         for recTuple in self.__recList:
+            if recTuple[3]:
+                return (1,'S',0,True)
             weight, direction, degree, stop = recTuple
             weightRange.append(weight+weightRange[-1])
 
@@ -25,7 +28,7 @@ class Arbitrator:
         print(self.__recList)
         print(recNum)
         outRec = self.__recList[recNum]
-        self.__recList=[]
+        self.__recList=[(0,'F',0,False)]
         return outRec
 
 

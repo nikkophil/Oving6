@@ -12,7 +12,7 @@ class UltraSonicSensOb:
 
     def get_value(self):
         #finner ut om noe er for nært
-        if self.distance < 5:
+        if self.distance < 10:
             return True
         else:
             return False

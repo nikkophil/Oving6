@@ -12,6 +12,7 @@ from camBehavior import CamBehavior
 from WanderBehavior import WanderBehavior
 from edgeBehavior import EdgeBehavior
 from camOb import CamOb
+#from AngleTestBehavior import AngleTestBehavior
 
 class BBCON:
     def __init__(self,sensObs,motObs):
@@ -40,6 +41,7 @@ class BBCON:
     def deactivate_behavior(self,behavior):
         if behavior not in self.__inactive_behaviors:
             self.__inactive_behaviors.append(behavior)
+            behavior.__active = False
 
     def run_one_timestep(self):
         #Update sensObs:
@@ -48,28 +50,37 @@ class BBCON:
         #Update behaviors:
         for behavior in self.__active_behaviors:
             behavior.update()
-            self.__arbitrator.sendRecommendation(behavior.getRecs()[0])
+            if behavior not in self.__inactive_behaviors:
+                self.__arbitrator.sendRecommendation(behavior.getRecs()[0])
         #Get info from arbitrator stop/update motObs
         rec = self.__arbitrator.choose_action()
         if rec[3]:
             #Usikker på om dette er alt som skal gjøres, må sikkert fikses senere
             for behavior in self.__active_behaviors:
                 self.deactivate_behavior(behavior)
-        for motOb in self.__motobs:
-            rec = (rec[1],rec[2])
-            motOb.update(rec)
+            for motOb in self.__motobs:
+                rec = ('R',1800)
+                motOb.update(rec)
+                rec = ('S',0)
+                motOb.update(rec)
+        else:
+            for motOb in self.__motobs:
+                rec = (rec[1],rec[2])
+                motOb.update(rec)
+        self.__timeStepCount += 1
         #Sleep, i sekunder
-        sleep(0.5)
-        #Reset sensors?
+        #sleep(1)
+        #for motOb in self.__motobs:
+        #    motOb.update(('S',0))
 
 
 
 def main():
 
     proxyPriority = 1
-    linePriority = 0.8
+    linePriority = 0.7
     camPriority = 0.5
-    wanderPriority = 0.2
+    wanderPriority = 0.1
 
     #Vent til knapp trykkes
     startButton = ZumoButton()
@@ -100,13 +111,14 @@ def main():
     CameraBehavior = CamBehavior(brain,[CameraOb],camPriority)
     WanderingBehavior = WanderBehavior(brain,[],wanderPriority)
     EdgyBehavior = EdgeBehavior(brain,[EdgyOb],linePriority)
-    #Legg til brain
-    brain.add_behavior(ProximityBehavior)
-    brain.add_behavior(CameraBehavior)
-    brain.add_behavior(WanderingBehavior)
-    brain.add_behavior(EdgyBehavior)
+    #AngleTester = AngleTestBehavior(brain, [], 1)
 
-    behaviorList = [ProximityBehavior, CameraBehavior, WanderingBehavior, EdgyBehavior]
+    #Legg til brain
+    #brain.add_behavior(ProximityBehavior)
+    brain.add_behavior(CameraBehavior)
+    #brain.add_behavior(WanderingBehavior)
+    #brain.add_behavior(EdgyBehavior)
+    #brain.add_behavior(AngleTester)
 
     while True:
         brain.run_one_timestep()
