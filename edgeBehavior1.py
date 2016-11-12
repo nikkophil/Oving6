@@ -1,6 +1,5 @@
-import random
 
-class WanderBehavior():
+class EdgeBehavior:
     #Husk, en behavior skal ikke kommunisere med en annen behavior!
     def __init__(self,bbcon,sensorList, priority):
         self.__bbcon = bbcon        #Pointer til kontrolleren, bruk til indirekte kommunikasjon
@@ -11,7 +10,10 @@ class WanderBehavior():
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
         self.__weight = 0           #Hvor 'viktig' anbefalingen er, =prioritet*match_degree
-        self.__speed = 0.1
+        self.__speed = 0.5
+        self.sensor = sensorList[0]
+        self.reflectanceValue = 0.2
+
 
     #Obligatoriske funksjoner
     def consider_deactivation(self):
@@ -35,23 +37,44 @@ class WanderBehavior():
             self.__weight = self.__priority * self.__match_degree           #Oppdaterer weight, basert på data
 
     def sense_and_act(self):
-        #The core computations performed by the behavior that use sensob readings to produce motor recommendations
-        #  (and halt requests).
-        #Husk å oppdatere match_degree
         self.__motorRecs = []
-        randDirection = random.randint(0,2)
-        randAngle = random.randint(45,180)
-        self.__match_degree = 1
-        self.__weight = self.__priority * self.__match_degree
-        if randDirection == 0:
-            recs= (self.__weight, "L", randAngle, False)
-        elif randDirection == 1:
-            recs = (self.__weight, "R", randAngle, False)
-        elif randDirection == 2:
-            recs = (self.__weight, "F", self.__speed, False)
+        self.sensor.update()
+        self.reflectances = self.sensor.get_value()
+        #Verdien av de tre sensorene til henoldsvis høyre og venstre
+        right_val = 0
+        left_val = 0
+        if self.edge():
+            self.__match_degree = 1
+            self.__priority * self.__match_degree
+            for i in self.reflectances[0:3]:
+                right_val += i
+            for i in self.reflectances[3:6]:
+                left_val += i
+            #Sjekker om den treffer en linje fra høyre eller venstre side
+            if right_val < left_val:
+                recs = (self.__weight, 'L', 90, True)
+            elif left_val < right_val:
+                recs = (self.__weight, 'R', 90, True)
+            else:
+                recs = (self.__weight,'B', self.__speed, True)
+        else:
+            self.__match_degree = 0
+            self.__priority * self.__match_degree
+            self.__motorRecs = (self.__weight,'F', self.__speed, False)
         self.__motorRecs.append(recs)
 
-    #Hjelpefunksjoner
+    #Hjelpefunksjon
+    #Sjekker om signalet er sterk nok
+    def edge(self):
+        for i in self.reflectances:
+            if i < self.reflectanceValue:
+                return True
+        return False
 
     def getRecs(self):
         return self.__motorRecs
+
+
+
+
+
