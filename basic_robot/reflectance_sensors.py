@@ -8,7 +8,7 @@ class ReflectanceSensors():
     # The constructor allows students to decide if they want to auto_calibrate
     # the robot, or if they want to hard code the min and max readings of the
     # reflectance sensors
-    def __init__(self, auto_calibrate=True, min_reading=100, max_reading=1000):
+    def __init__(self, auto_calibrate=False, min_reading=100, max_reading=1000):
         self.setup()
         if (auto_calibrate):
             # Calibration loop should last ~5 seconds
