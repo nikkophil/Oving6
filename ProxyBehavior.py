@@ -82,8 +82,6 @@ class ProxyBehavior:
         recDir, recDeg, recStop = rec
         outRec = (self.__weight, recDir, recDeg, recStop)
         self.__motorRecs = [outRec]
-        print("ProxyMotorRec:")
-        print(self.__motorRecs[0])
 
     #Hjelpefunksjoner
 

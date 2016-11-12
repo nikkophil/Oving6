@@ -6,7 +6,6 @@ class Arbitrator:
         self.__recList = []
 
     def sendRecommendation(self, recTuple):
-        print("Sendt rec to arb:", recTuple)
         self.__recList.append(recTuple)
 
     def choose_action(self):
@@ -24,9 +23,6 @@ class Arbitrator:
             if probRange < weightRange[i]:
                 recNum = i-1
                 break
-        print(weightRange)
-        print(self.__recList)
-        print(recNum)
         outRec = self.__recList[recNum]
         self.__recList=[(0,'F',0,False)]
         return outRec

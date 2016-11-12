@@ -69,9 +69,10 @@ class BBCON:
                 motOb.update(rec)
         self.__timeStepCount += 1
         #Sleep, i sekunder
-        #sleep(1)
-        #for motOb in self.__motobs:
-        #    motOb.update(('S',0))
+        print(rec)
+        sleep(0.7)
+        for motOb in self.__motobs:
+            motOb.update(('S',0))
 
 
 
@@ -114,10 +115,10 @@ def main():
     #AngleTester = AngleTestBehavior(brain, [], 1)
 
     #Legg til brain
-    #brain.add_behavior(ProximityBehavior)
+    brain.add_behavior(ProximityBehavior)
     brain.add_behavior(CameraBehavior)
-    #brain.add_behavior(WanderingBehavior)
-    #brain.add_behavior(EdgyBehavior)
+    brain.add_behavior(WanderingBehavior)
+    brain.add_behavior(EdgyBehavior)
     #brain.add_behavior(AngleTester)
 
     while True:
