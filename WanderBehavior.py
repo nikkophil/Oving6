@@ -11,7 +11,7 @@ class WanderBehavior():
         self.__halt_request = False #Request å stoppe (avslutte bevegelse)
         self.__match_degree = 0     #Tall mellom 0 og 1 som indikerer hvor 'sikker' behavioren er på det den leser.
         self.__weight = 0           #Hvor 'viktig' anbefalingen er, =prioritet*match_degree
-        self.__speed = 0.1
+        self.__speed = 0.2
 
     #Obligatoriske funksjoner
     def consider_deactivation(self):
@@ -39,16 +39,16 @@ class WanderBehavior():
         #  (and halt requests).
         #Husk å oppdatere match_degree
         self.__motorRecs = []
-        randDirection = random.randint(0,2)
-        randAngle = random.randint(45,180)
-        self.__match_degree = 1
+        #randDirection = random.randint(0,10)
+        #randAngle = random.randint(20,45)
+        self.__match_degree = 0.1
         self.__weight = self.__priority * self.__match_degree
-        if randDirection == 0:
-            recs= (self.__weight, "L", randAngle, False)
-        elif randDirection == 1:
-            recs = (self.__weight, "R", randAngle, False)
-        elif randDirection == 2:
-            recs = (self.__weight, "F", self.__speed, False)
+        #if randDirection == 0:
+        #    recs= (self.__weight, "L", randAngle, False)
+        #elif randDirection == 1:
+        #    recs = (self.__weight, "R", randAngle, False)
+        #else:
+        recs = (self.__weight, "F", self.__speed, False)
         self.__motorRecs.append(recs)
 
     #Hjelpefunksjoner
