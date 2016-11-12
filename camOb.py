@@ -7,16 +7,18 @@ class CamOb:
         self.cam = Camera()
         self.sensor_list = [self.cam]
         self.value = None               #Imager() med bilde fra kamera
+        self.skip = False
 
     def update(self):
         #oppdaterer kamera, og lagrer value som blir returnert
+        if self.skip:
+            return self.value
         self.value = Imager(image = self.cam.update())
         return self.value
 
 
     def get_value(self):
         #henter verdi fra cam, og lagrer den til self.value
-        self.value = Imager(image=self.cam.get_value())
         return self.value
 
     def reset(self):

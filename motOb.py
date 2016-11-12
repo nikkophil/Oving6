@@ -2,36 +2,6 @@ from basic_robot.motors import Motors
 import math
 
 class MotOb:
-
-
-    def Read_Zumo_Volts_AREF(self):
-        return 1
-
-    def __calc_turn_length(self, speed):
-        y = 3.3375e-6*speed**3 - 0.00327*speed*speed + 1.0536*speed - 28.595
-        length = 10.0*90.0/y
-        return length
-
-    def __calc_time(self, speed, length):
-        a = 24069*speed**(-1.238)
-        b = 5.7824*math.log(speed) - 19.99
-        time = length * a + b
-        correction = None
-        if speed > 100:
-            correction = -0.0007 * speed + 1.154
-
-        elif speed > 50:
-            correction = 0.0017 * speed + 0.9167
-
-        else:
-            correction = 0.0187 * speed + 0.0667
-
-        time = time/correction
-        #battery_volt =self.Read_Zumo_Volts_AREF()
-        #time = time * 5.2 /battery_volt
-        return time
-
-
     def __init__(self):
         self.operations = {'L': self.__turn_left,
                            'R': self.__turn_right,
@@ -39,6 +9,7 @@ class MotOb:
                            'B': self.__move_backwards,
                            'S': self.stop}
 
+        self.fullRotTid = 1.5
         self.motors = Motors()
         self.value = None
 
@@ -53,31 +24,26 @@ class MotOb:
 
     #TODO
     def __turn_left(self):
+        #At a speed of 0.5(of max), it takes about 3 seconds to rotate 360 degrees
         angle = self.value[1]
-        speed = self.motors.max*0.25
-        self.stop()
+        speed = 0.5
 
-        length = self.__calc_turn_length(speed)
-        length = length*angle/90.0
 
-        time = self.__calc_time(speed, length)
-        speed = 0.25
+        turnTime = self.fullRotTid*angle/360
+        #print("left:", angle, turnTime)
 
-        self.motors.set_value([-speed,speed], time)
+        self.motors.set_value([-speed,speed], turnTime)
 
     #TODO
     def __turn_right(self):
         angle = self.value[1]
-        speed = self.motors.max * 0.25
-        self.stop()
+        speed = 0.5
 
-        length = self.__calc_turn_length(speed)
-        length = length * angle / 90.0
+        turnTime = self.fullRotTid * angle / 360
 
-        time = self.__calc_time(speed, length)
-        speed = 0.25
+        #print("left:", angle, turnTime)
 
-        self.motors.set_value([speed, -speed], time)
+        self.motors.set_value([speed, -speed], turnTime)
 
     def __move_backwards(self):
         speed = self.value[1]
